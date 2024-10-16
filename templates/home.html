@@ -1,16 +1,31 @@
-
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<p>Hi {{ user.username }}!</p>
-<form action="{% url 'logout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Log Out</button> 
-</form>
+<h2>Tutors and Their Availability</h2>
+
+{% if tutors %}
+    <p>Debug: Tutors found</p>
+    <ul>
+        {% for tutor in tutors %}
+            <li>
+                <strong>{{ tutor.username }}</strong>
+                <p>Debug: Availability - {{ tutor.availability }}</p>
+                {% if tutor.availability %}
+                    <ul>
+                        {% for day, hours in tutor.availability.items %}
+                            <li>{{ day|capfirst }}: {{ hours }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No availability set.</p>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 {% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a> | <a href="{% url 'signup' %}">Sign Up</a> {% endif %}
+    <p>No tutors available.</p>
+{% endif %}
+
 {% endblock content %}
