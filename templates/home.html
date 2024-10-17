@@ -3,29 +3,30 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-<h2>Tutors and Their Availability</h2>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Tutors and Their Availability</h2>
 
-{% if tutors %}
-    <p>Debug: Tutors found</p>
-    <ul>
-        {% for tutor in tutors %}
-            <li>
-                <strong>{{ tutor.username }}</strong>
-                <p>Debug: Availability - {{ tutor.availability }}</p>
-                {% if tutor.availability %}
-                    <ul>
-                        {% for day, hours in tutor.availability.items %}
-                            <li>{{ day|capfirst }}: {{ hours }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No availability set.</p>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No tutors available.</p>
-{% endif %}
-
+    {% if tutors %}
+        <div class="list-group">
+            {% for tutor in tutors %}
+                <div class="list-group-item mb-3">
+                    <h4 class="mb-1">
+                        <a href="{% url 'tutor_detail' tutor.pk %}" class="text-decoration-none">{{ tutor.get_full_name }}</a>
+                    </h4>
+                    {% if tutor.availability %}
+                        <ul class="list-unstyled">
+                            {% for day, hours in tutor.availability.items %}
+                                <li><strong>{{ day|capfirst }}:</strong> {{ hours }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No availability set.</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-muted">No tutors available.</p>
+    {% endif %}
+</div>
 {% endblock content %}

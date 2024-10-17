@@ -78,6 +78,10 @@ class UpdateAvailabilityForm(forms.ModelForm):
         required=False,
         widget=forms.TextInput(attrs={"placeholder": "e.g., 9:00-11:00, 14:00-16:00"}),
     )
+    subjects = forms.CharField(
+        widget=forms.Textarea(attrs={"placeholder": "List the subjects you can tutor"}),
+        required=False,
+    )
 
     class Meta:
         model = Tutor
@@ -90,4 +94,5 @@ class UpdateAvailabilityForm(forms.ModelForm):
             "friday_hours",
             "saturday_hours",
             "sunday_hours",
+            "subjects",
         ]

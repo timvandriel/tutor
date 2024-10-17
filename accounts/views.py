@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, TemplateView
+from django.views.generic import CreateView, UpdateView, TemplateView, DetailView
 from .forms import CustomUserCreationForm, UpdateAvailabilityForm
 from .models import Tutor
 
@@ -19,6 +19,14 @@ class TutorUpdateAvailabilityView(UpdateView):
     def get_object(self):
         return self.request.user
 
+    def get_initial(self):
+        initial = super().get_initial()
+        availability = self.request.user.availability
+        for day, hours in availability.items():
+            initial[f"{day}_hours"] = hours
+        initial["available_days"] = list(availability.keys())
+        return initial
+
     def form_valid(self, form):
         availability = {}
         for day in form.cleaned_data["available_days"]:
@@ -36,3 +44,9 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["tutors"] = Tutor.objects.all()
         return context
+
+
+class TutorDetailView(DetailView):
+    model = Tutor
+    template_name = "registration/tutor_detail.html"
+    context_object_name = "tutor"

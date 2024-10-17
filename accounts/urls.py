@@ -1,5 +1,10 @@
 from django.urls import path
-from .views import SignUpView, TutorUpdateAvailabilityView, HomePageView
+from .views import (
+    SignUpView,
+    TutorUpdateAvailabilityView,
+    HomePageView,
+    TutorDetailView,
+)
 
 urlpatterns = [
     path("signup/", SignUpView.as_view(), name="signup"),
@@ -9,4 +14,5 @@ urlpatterns = [
         name="update_availability",
     ),
     path("", HomePageView.as_view(), name="home"),
+    path("tutor/<int:pk>/", TutorDetailView.as_view(), name="tutor_detail"),
 ]

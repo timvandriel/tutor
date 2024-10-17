@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Tutor Details{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">{{ tutor.get_full_name }}</h2>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><strong>Email:</strong> <a href="mailto:{{ tutor.email }}">{{ tutor.email }}</a></p>
+            <p class="card-text"><strong>Subjects:</strong> {{ tutor.subjects }}</p>
+            <p class="card-text"><strong>Availability:</strong></p>
+            {% if tutor.availability %}
+                <ul class="list-group">
+                    {% for day, hours in tutor.availability.items %}
+                        <li class="list-group-item">{{ day|capfirst }}: {{ hours }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No availability set.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
